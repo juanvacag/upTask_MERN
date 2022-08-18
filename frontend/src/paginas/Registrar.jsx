@@ -1,6 +1,7 @@
 import {useState} from 'react'
 import {Link} from 'react-router-dom'
 import Alerta from '../components/Alerta'
+import axios from 'axios'
 
 const Registrar = () => {
 
@@ -10,7 +11,7 @@ const Registrar = () => {
   const [repetirPassword, setRepetirPassword] = useState('')
   const [alerta, setAlerta] = useState({})
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault()
 
     //1º validación, todos los campos son obligatorios
@@ -41,7 +42,26 @@ const Registrar = () => {
     setAlerta({})
 
     //crear el usuario en la API
-    console.log('Creando...')
+    try {
+      const {data} = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/usuarios`, {
+        nombre, email, password})
+        //console.log(data)
+        
+        setAlerta({
+          msg: data.msg,
+          error: false
+        })
+        setNombre('')
+        setEmail('')
+        setPassword('')
+        setRepetirPassword('')
+    } catch (error) {
+      //console.log(error.response.data.msg)
+      setAlerta({
+        msg: error.response.data.msg,
+        error: true
+      })
+    }
 }
   const {msg} = alerta
 
@@ -123,19 +143,19 @@ const Registrar = () => {
           className="bg-sky-700 mb-5 w-full py-3 text-white uppercase font-bold rounded hover:cursor-pointer hover:bg-sky-800 transition-colors"
         />
       </form>
-      <nav className="lg:flex lg:justify-between">
-        <Link
-            to="/"
-            className='block text-center my-5 text-slate-500 uppercase text-sm'
-        >¿Ya tienes una cuenta? Inicia Sesión</Link>
-        
-        <Link
-            to="olvide-password "
-            className='block text-center my-5 text-slate-500 uppercase text-sm'
-        >Olvide mi password</Link>
-      </nav>
-    </>
-  )
-}
+          <nav className="lg:flex lg:justify-between">
+            <Link
+                to="/"
+                className='block text-center my-5 text-slate-500 uppercase text-sm'
+            >¿Ya tienes una cuenta? Inicia Sesión</Link>
+            
+            <Link
+                to="olvide-password "
+                className='block text-center my-5 text-slate-500 uppercase text-sm'
+            >Olvide mi password</Link>
+          </nav>
+      </>
+    )
+  }
 
 export default Registrar
