@@ -17,9 +17,10 @@ const router = express.Router()
 router.post('/', registrar) //nuevo usuario
 router.post('/login', autenticar) //autenticar usuario
 router.get('/confirmar/:token', confirmar) //confirmar usuario
-router.post("/olvide-password", olvidePassword)
-//router.get('/olvide-password/:token', comprobarToken)
-router.route('/olvide-password/:token').get(comprobarToken).post(nuevoPassword)//esta linea sustituye a las dos anteriores
+router.post("/olvide-password", olvidePassword) //olvide password
+//router.route('/olvide-password/:token').get(comprobarToken).post(nuevoPassword)
+router.get("/olvide-password/:token", comprobarToken)
+router.post("/olvide-password/:token", nuevoPassword)
 
 router.get('/perfil', checkAuth, perfil)
 
