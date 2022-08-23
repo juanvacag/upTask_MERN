@@ -13,7 +13,7 @@ export const emailRegistro = async (datos) => {
         }
       });
 
-      //informacion del email
+      //informacion del email de registro
       const info = await transport.sendMail({
         from: '"Uptask - Administrador de Proyectos" <cuentas@uptask.com>',
         to: email,
@@ -33,6 +33,7 @@ export const emailRegistro = async (datos) => {
 export const emailOlvidePassword = async (datos) => {
   const {nombre, email, token} = datos
 
+  //TODO: mover a variables de entorno
   const transport = nodemailer.createTransport({
       host: process.env.EMAIL_HOST,
       port: process.env.EMAIL_PORT,
@@ -42,16 +43,16 @@ export const emailOlvidePassword = async (datos) => {
       }
     });
 
-    //informacion del email
+    //informacion del email de olvide password
     const info = await transport.sendMail({
-      from: '"Uptask - Administrador de Proyectos" <cuentas@uptask.com',
+      from: '"Uptask - Administrador de Proyectos" <cuentas@uptask.com>',
       to: email,
       subject: "Uptask - Reestablece tu Password",
       text: "Reestablece tu Password",
       html:`<p>Hola: ${nombre}. Has solicitado reestablecer tu password</p>
       <p>Sigue el siguiente enlace para generar un nuevo password:</p>
       <a href="${process.env.FRONTEND_URL}/olvide-password/${token}">Reestablecer Password</a>
-      <p>Si no solicitaste este email, por favor ignoralo</p>
+      <p>Si no solicitaste este email, puedes ignorar el mensaje</p>
       `
   })
 

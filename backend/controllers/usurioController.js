@@ -98,7 +98,7 @@ const olvidePassword = async (req, res) => {
             token: usuario.token
         })
         
-        res.json({msg: "Hemos enviado un Email con las instrucciones"})
+        res.json({msg: "Te hemos enviado un Email con las instrucciones"})
     } catch (error) {
         console.log(error)
     }
